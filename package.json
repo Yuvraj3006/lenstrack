@@ -1,0 +1,20 @@
+{
+  "name": "lenstrack",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@9.15.9",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "db:push": "pnpm --filter @lenstrack/db prisma db push",
+    "db:migrate": "pnpm --filter @lenstrack/db prisma migrate dev",
+    "db:seed": "pnpm --filter @lenstrack/db tsx seed.ts",
+    "db:studio": "pnpm --filter @lenstrack/db prisma studio",
+    "worker:dev": "pnpm --filter @lenstrack/pdf-worker dev"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0",
+    "typescript": "^5.4.5",
+    "prettier": "^3.2.5"
+  }
+}

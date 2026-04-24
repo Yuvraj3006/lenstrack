@@ -1,0 +1,12 @@
+{
+  "name": "@lenstrack/ui",
+  "version": "1.0.0",
+  "main": "./index.ts",
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  },
+  "peerDependencies": {
+    "react": "^18",
+    "react-dom": "^18"
+  }
+}

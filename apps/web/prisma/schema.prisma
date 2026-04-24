@@ -1,0 +1,187 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Store {
+  id        String    @id @default(cuid())
+  name      String
+  city      String
+  address   String?
+  phone     String?
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  users     StoreUser[]
+  orders    Order[]
+}
+
+model StoreUser {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  phone        String?
+  passwordHash String
+  isActive     Boolean  @default(true)
+  storeId      String
+  store        Store    @relation(fields: [storeId], references: [id])
+  createdAt    DateTime @default(now())
+  orders       Order[]
+  auditLogs    AuditLog[]
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  auditLogs    AuditLog[]
+}
+
+model Customer {
+  id        String   @id @default(cuid())
+  mobile    String   @unique
+  createdAt DateTime @default(now())
+  orders    Order[]
+}
+
+model Category {
+  id       String    @id @default(cuid())
+  name     String    @unique
+  isActive Boolean   @default(true)
+  products Product[]
+}
+
+model VisionType {
+  id       String    @id @default(cuid())
+  name     String    @unique
+  isActive Boolean   @default(true)
+  products Product[]
+}
+
+model WarrantyDuration {
+  id       String    @id @default(cuid())
+  label    String    @unique
+  months   Int
+  isActive Boolean   @default(true)
+  products Product[]
+}
+
+model CommonBenefit {
+  id       String           @id @default(cuid())
+  label    String           @unique
+  products ProductBenefit[]
+}
+
+model ProductBenefit {
+  productId       String
+  commonBenefitId String
+  product         Product       @relation(fields: [productId], references: [id])
+  commonBenefit   CommonBenefit @relation(fields: [commonBenefitId], references: [id])
+
+  @@id([productId, commonBenefitId])
+}
+
+model ProgressiveFeature {
+  id        String  @id @default(cuid())
+  label     String
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Product {
+  id                 String               @id @default(cuid())
+  code               String               @unique
+  name               String
+  description        String?
+  categoryId         String
+  category           Category             @relation(fields: [categoryId], references: [id])
+  visionTypeId       String
+  visionType         VisionType           @relation(fields: [visionTypeId], references: [id])
+  warrantyDurationId String
+  warrantyDuration   WarrantyDuration     @relation(fields: [warrantyDurationId], references: [id])
+  warrantyPolicy     String
+  commonBenefits     ProductBenefit[]
+  customBenefits     String[]
+  progressiveFeatures ProgressiveFeature[]
+  isActive           Boolean              @default(true)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+}
+
+model Order {
+  id            String          @id @default(cuid())
+  invoiceNumber String
+  customerId    String
+  customer      Customer        @relation(fields: [customerId], references: [id])
+  customerName  String
+  storeId       String
+  store         Store           @relation(fields: [storeId], references: [id])
+  storeUserId   String
+  storeUser     StoreUser       @relation(fields: [storeUserId], references: [id])
+  lensItems     OrderLensItem[]
+  authCode      String          @unique @default(cuid())
+  qrCodeUrl     String?
+  pdfUrl        String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@unique([invoiceNumber, storeId])
+  @@index([storeId, createdAt])
+}
+
+model OrderLensItem {
+  id              String  @id @default(cuid())
+  orderId         String
+  order           Order   @relation(fields: [orderId], references: [id])
+  productId       String
+  productSnapshot Json
+  rightEyeSph     String?
+  rightEyeCyl     String?
+  rightEyeAxis    String?
+  rightEyeAdd     String?
+  leftEyeSph      String?
+  leftEyeCyl      String?
+  leftEyeAxis     String?
+  leftEyeAdd      String?
+  notes           String?
+  createdAt       DateTime @default(now())
+}
+
+model AuditLog {
+  id          String    @id @default(cuid())
+  action      String
+  entityType  String
+  entityId    String
+  before      Json?
+  after       Json?
+  adminId     String?
+  admin       Admin?    @relation(fields: [adminId], references: [id])
+  storeUserId String?
+  storeUser   StoreUser? @relation(fields: [storeUserId], references: [id])
+  createdAt   DateTime  @default(now())
+}
+
+model OtpRecord {
+  id        String   @id @default(cuid())
+  mobile    String
+  otp       String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([mobile])
+}
+
+model LensCareTip {
+  id       String  @id @default(cuid())
+  title    String
+  content  String
+  order    Int     @default(0)
+  isActive Boolean @default(true)
+}
