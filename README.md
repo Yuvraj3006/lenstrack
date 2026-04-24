@@ -133,6 +133,16 @@ pnpm worker:dev
 | `PDF_OUTPUT_DIR` | Directory for generated PDFs | `./public/pdfs` |
 | `QR_OUTPUT_DIR` | Directory for QR code images | `./public/qrcodes` |
 
+### Vercel: manual env vars & future `git push`
+
+**A normal `git push` / deploy does not change** anything under **Vercel → Project → Settings → Environment Variables**.
+
+- This repo’s `apps/web/vercel.json` only sets install/framework hints — **no `env` block** that would sync secrets from Git into the dashboard.
+- There is **no** committed `.env.production` (or similar) with real credentials; `.env` / `.env.local` stay **gitignored**.
+- `apps/web/next.config.js` **reads** `process.env` **during `next build`** on Vercel and may inline **`NEXT_PUBLIC_*`** into the bundle — values still **come from the dashboard** (or Vercel system vars like `VERCEL_URL`). It does **not** call the Vercel API to overwrite your saved variables.
+
+The **only** ways dashboard values change are: you edit them yourself, or you explicitly use Vercel features such as **Import .env** / API tokens that modify project env.
+
 ---
 
 ## Development Notes
