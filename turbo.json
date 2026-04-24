@@ -1,10 +1,38 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env.*local"],
+  "globalPassThroughEnv": [
+    "CI",
+    "NODE_ENV",
+    "VERCEL",
+    "VERCEL_*",
+    "DATABASE_URL",
+    "DIRECT_URL",
+    "REDIS_URL",
+    "JWT_SECRET",
+    "JWT_REFRESH_SECRET",
+    "ADMIN_JWT_EXPIRES",
+    "STORE_JWT_EXPIRES",
+    "CUSTOMER_JWT_EXPIRES",
+    "OTP_TTL_SECONDS",
+    "OTP_RATE_LIMIT_MAX",
+    "OTP_RATE_LIMIT_WINDOW_SECONDS",
+    "NEXT_PUBLIC_*",
+    "SMS_PROVIDER",
+    "SMS_API_KEY",
+    "SMS_SENDER_ID",
+    "SMS_TEMPLATE_ID",
+    "FIREBASE_PROJECT_ID",
+    "FIREBASE_CLIENT_EMAIL",
+    "FIREBASE_PRIVATE_KEY",
+    "PDF_OUTPUT_DIR",
+    "QR_OUTPUT_DIR"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
+      "env": ["DATABASE_URL", "NEXT_PUBLIC_*"]
     },
     "dev": {
       "cache": false,
