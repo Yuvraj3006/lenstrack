@@ -10,8 +10,11 @@ function normalizeOrigin(value) {
 }
 
 /**
- * Values in `env` are inlined at **build** time into client + server bundles.
- * Order: explicit NEXT_PUBLIC_BASE_URL → Vercel production host → this deployment → local dev.
+ * Values in `env` are inlined at **build** time (client + server).
+ * Only **NEXT_PUBLIC_*** belongs here — never add secrets (DB/JWT/Redis/SMS keys).
+ *
+ * Every listed `NEXT_PUBLIC_*` key is always set to a string (`""` if unset) so
+ * `process.env.*` is never `undefined` after build.
  */
 function buildTimePublicEnv() {
   const base =
@@ -19,8 +22,6 @@ function buildTimePublicEnv() {
     normalizeOrigin(process.env.VERCEL_PROJECT_PRODUCTION_URL) ||
     normalizeOrigin(process.env.VERCEL_URL) ||
     "http://localhost:3000";
-
-  const env = { NEXT_PUBLIC_BASE_URL: base };
 
   const firebaseKeys = [
     "NEXT_PUBLIC_FIREBASE_API_KEY",
@@ -30,8 +31,10 @@ function buildTimePublicEnv() {
     "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID",
     "NEXT_PUBLIC_FIREBASE_APP_ID",
   ];
+
+  const env = { NEXT_PUBLIC_BASE_URL: base };
   for (const k of firebaseKeys) {
-    if (process.env[k]) env[k] = process.env[k];
+    env[k] = process.env[k] ?? "";
   }
 
   return env;
