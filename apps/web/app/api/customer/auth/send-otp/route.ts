@@ -52,11 +52,20 @@ export async function POST(req: NextRequest) {
       await prisma.otpRecord.create({ data: { mobile, otp, expiresAt } });
     } catch (dbErr) {
       console.error("[Send OTP] Database", dbErr);
-      const msg =
-        dbErr instanceof Prisma.PrismaClientKnownRequestError
-          ? `Database error (${dbErr.code}). Run prisma db push against production DATABASE_URL.`
-          : "Could not save OTP.";
-      return errorResponse(msg, "DB_ERROR", 500);
+      if (dbErr instanceof Prisma.PrismaClientKnownRequestError) {
+        const meta = dbErr.meta as Record<string, unknown> | undefined;
+        const table = meta?.table != null ? String(meta.table) : "";
+        const p2021 =
+          dbErr.code === "P2021"
+            ? ` Table missing${table ? `: ${table}` : ""}. Push schema to the **same** Neon DB as Vercel's DATABASE_URL (Neon "direct" connection URL if pooler push fails).`
+            : "";
+        return errorResponse(
+          `Database error (${dbErr.code}).${p2021 || " Run prisma db push against production DATABASE_URL."}`,
+          "DB_ERROR",
+          500
+        );
+      }
+      return errorResponse("Could not save OTP.", "DB_ERROR", 500);
     }
 
     try {

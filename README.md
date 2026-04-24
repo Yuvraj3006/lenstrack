@@ -174,12 +174,37 @@ pnpm db:studio
 # Create a new migration
 pnpm db:migrate
 
-# Push schema changes (dev only)
+# Push schema to Postgres (creates tables — use the SAME DATABASE_URL as production)
+# From repo root, after: export DATABASE_URL='postgresql://...'
 pnpm db:push
 
 # Re-seed database
 pnpm db:seed
 ```
+
+### Production OTP fails with `P2021` / `DB_ERROR`
+
+`P2021` means **a table Prisma expects is missing** in the database behind your `DATABASE_URL` (often `OtpRecord`).
+
+1. In **Vercel**, copy the exact **`DATABASE_URL`** (Production) — must not be empty after save (re-paste if you used Edit on a Sensitive var).
+2. On your machine, from repo root:
+
+   ```bash
+   export DATABASE_URL='paste-the-same-url-as-vercel'
+   pnpm db:push
+   ```
+
+3. In **Neon → SQL Editor**, confirm tables exist:
+
+   ```sql
+   SELECT tablename FROM pg_tables WHERE schemaname = 'public' ORDER BY tablename;
+   ```
+
+   You should see `OtpRecord` among others.
+
+4. If `pnpm db:push` errors on the **pooler** URL, use Neon’s **direct (non-pooler)** connection string for pushes only, then switch Vercel back to pooler if you prefer.
+
+5. **Neon branch**: `db push` must run against the **same branch** as the connection string Vercel uses (e.g. `main` vs `development`).
 
 ---
 
