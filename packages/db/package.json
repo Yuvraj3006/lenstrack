@@ -7,6 +7,7 @@
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx seed.ts",
+    "db:ensure-admin": "tsx scripts/ensure-default-admin.ts",
     "db:studio": "prisma studio",
     "db:generate": "prisma generate"
   },

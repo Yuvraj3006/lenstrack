@@ -11,7 +11,10 @@ import {
 } from "@/lib/api-response";
 
 const loginSchema = z.object({
-  email: z.string().email(),
+  email: z
+    .string()
+    .email()
+    .transform((s) => s.trim().toLowerCase()),
   password: z.string().min(1),
 });
 
@@ -26,11 +29,13 @@ export async function POST(req: NextRequest) {
     const { email, password } = parsed.data;
     const admin = await prisma.admin.findUnique({ where: { email } });
     if (!admin) {
+      console.warn("[Admin Login] No admin row for email:", email);
       return errorResponse("Invalid credentials", "INVALID_CREDENTIALS", 401);
     }
 
     const valid = await bcrypt.compare(password, admin.passwordHash);
     if (!valid) {
+      console.warn("[Admin Login] Password mismatch for:", email);
       return errorResponse("Invalid credentials", "INVALID_CREDENTIALS", 401);
     }
 
