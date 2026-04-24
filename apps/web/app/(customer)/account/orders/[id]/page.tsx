@@ -3,7 +3,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
 import { format } from "date-fns";
-import { ArrowLeft, CheckCircle2, Share2, Download, Eye, Shield, MapPin, Phone, Calendar, QrCode } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Share2, Download, Shield, MapPin, Phone, Calendar, QrCode } from "lucide-react";
+import { LenstrackLogo } from "@/components/lenstrack-logo";
 import Link from "next/link";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -70,12 +71,9 @@ function AuthCard({ order, lensCareTips }: { order: Order; lensCareTips: LensCar
       {/* Card Header */}
       <div className="bg-gradient-to-r from-[#1A1A2E] to-[#2d2d5e] rounded-t-2xl p-6">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Eye className="h-7 w-7 text-[#E94560]" />
-            <div>
-              <h1 className="text-2xl font-bold text-white">Lens<span className="text-[#E94560]">track</span></h1>
-              <p className="text-white/50 text-xs">Digital Lens Authentication</p>
-            </div>
+          <div>
+            <LenstrackLogo width={150} className="mb-1" />
+            <p className="text-white/50 text-xs">Digital Lens Authentication</p>
           </div>
           <div className="flex items-center gap-1.5 bg-green-500/20 border border-green-400/30 rounded-full px-3 py-1.5">
             <CheckCircle2 className="h-4 w-4 text-green-400" />

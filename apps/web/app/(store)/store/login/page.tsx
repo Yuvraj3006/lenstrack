@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { LenstrackLogo } from "@/components/lenstrack-logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -45,9 +46,9 @@ export default function StoreLoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#1A1A2E] via-[#16213E] to-[#0F3460] p-4">
       <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white">Lens<span className="text-[#E94560]">track</span></h1>
-          <p className="text-white/60 text-sm mt-1">Store Portal</p>
+        <div className="text-center mb-8 flex flex-col items-center">
+          <LenstrackLogo width={168} />
+          <p className="text-white/60 text-sm mt-2">Store Portal</p>
         </div>
         <Card className="border-0 shadow-2xl">
           <CardHeader className="space-y-1 pb-4">

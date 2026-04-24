@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Eye, Loader2, ArrowLeft } from "lucide-react";
+import { Loader2, ArrowLeft } from "lucide-react";
+import { LenstrackLogo } from "@/components/lenstrack-logo";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -140,12 +141,7 @@ export default function OtpPage() {
         >
           <ArrowLeft className="h-4 w-4" /> Back
         </Link>
-        <div className="flex items-center gap-2">
-          <Eye className="h-5 w-5 text-[#E94560]" />
-          <span className="text-base font-bold text-white">
-            Lens<span className="text-[#E94560]">track</span>
-          </span>
-        </div>
+        <LenstrackLogo width={128} />
         <div className="w-16" />
       </header>
 

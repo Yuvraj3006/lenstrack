@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, FilePlus, ShoppingBag, LogOut, Eye } from "lucide-react";
+import { LayoutDashboard, FilePlus, ShoppingBag, LogOut } from "lucide-react";
+import { LenstrackLogo } from "@/components/lenstrack-logo";
 import { toast } from "sonner";
 
 const navItems = [
@@ -25,14 +26,9 @@ export function StoreSidebar() {
   return (
     <aside className="w-64 min-h-screen bg-[#1A1A2E] text-white flex flex-col">
       <div className="p-6 border-b border-white/10">
-        <div className="flex items-center gap-2">
-          <Eye className="h-6 w-6 text-[#E94560]" />
-          <div>
-            <h1 className="text-lg font-bold tracking-tight">
-              Lens<span className="text-[#E94560]">track</span>
-            </h1>
-            <p className="text-xs text-white/50">Store Portal</p>
-          </div>
+        <div>
+          <LenstrackLogo width={118} className="mb-1" />
+          <p className="text-xs text-white/50">Store Portal</p>
         </div>
       </div>
       <nav className="flex-1 p-4 space-y-1">

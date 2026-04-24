@@ -3,7 +3,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { format } from "date-fns";
-import { CheckCircle2, XCircle, Eye, Shield, MapPin, Phone, QrCode } from "lucide-react";
+import { CheckCircle2, XCircle, Shield, MapPin, Phone, QrCode } from "lucide-react";
+import { LenstrackLogo } from "@/components/lenstrack-logo";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -87,9 +88,8 @@ export default function PublicVerifyPage() {
       <div className="max-w-lg mx-auto">
         {/* Top brand */}
         <div className="text-center mb-6">
-          <div className="flex items-center justify-center gap-2 mb-1">
-            <Eye className="h-6 w-6 text-[#E94560]" />
-            <span className="text-2xl font-bold text-white">Lens<span className="text-[#E94560]">track</span></span>
+          <div className="flex justify-center mb-2">
+            <LenstrackLogo width={160} />
           </div>
           <p className="text-white/40 text-xs">Digital Lens Authentication Platform</p>
         </div>

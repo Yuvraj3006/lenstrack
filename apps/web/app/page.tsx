@@ -1,23 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { Eye, Shield, Store, Settings } from "lucide-react";
+import { Shield, Store, Settings } from "lucide-react";
+import { LenstrackLogo } from "@/components/lenstrack-logo";
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#1A1A2E] flex flex-col">
       {/* Header */}
       <header className="flex items-center justify-center pt-12 pb-6">
-        <div className="flex items-center gap-3">
-          <Eye className="h-9 w-9 text-[#E94560]" />
-          <div>
-            <h1 className="text-3xl font-black text-white tracking-tight">
-              Lens<span className="text-[#E94560]">track</span>
-            </h1>
-            <p className="text-white/40 text-xs font-medium tracking-widest uppercase">
-              Digital Lens Authentication
-            </p>
-          </div>
+        <div className="flex flex-col items-center gap-2">
+          <LenstrackLogo width={200} />
+          <p className="text-white/40 text-xs font-medium tracking-widest uppercase text-center">
+            Digital Lens Authentication
+          </p>
         </div>
       </header>
 

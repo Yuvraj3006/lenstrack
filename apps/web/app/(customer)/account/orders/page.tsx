@@ -4,7 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Eye, LogOut, ShoppingBag, Calendar, MapPin } from "lucide-react";
+import { LogOut, ShoppingBag, Calendar, MapPin } from "lucide-react";
+import { LenstrackLogo } from "@/components/lenstrack-logo";
 import { toast } from "sonner";
 import { JWT_COOKIE_NAMES } from "@lenstrack/config";
 import { Button } from "@/components/ui/button";
@@ -43,10 +44,7 @@ export default function CustomerOrdersPage() {
       {/* Header */}
       <header className="bg-[#1A1A2E] text-white">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Eye className="h-5 w-5 text-[#E94560]" />
-            <span className="font-bold">Lens<span className="text-[#E94560]">track</span></span>
-          </div>
+          <LenstrackLogo width={120} />
           <button onClick={handleLogout} className="flex items-center gap-1.5 text-sm text-white/70 hover:text-white">
             <LogOut className="h-4 w-4" />
             Logout

@@ -6,7 +6,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Eye, Loader2, Shield, ArrowLeft } from "lucide-react";
+import { Loader2, Shield, ArrowLeft } from "lucide-react";
+import { LenstrackLogo } from "@/components/lenstrack-logo";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -73,12 +74,7 @@ export default function VerifyPage() {
         >
           <ArrowLeft className="h-4 w-4" /> Home
         </Link>
-        <div className="flex items-center gap-2">
-          <Eye className="h-5 w-5 text-[#E94560]" />
-          <span className="text-base font-bold text-white">
-            Lens<span className="text-[#E94560]">track</span>
-          </span>
-        </div>
+        <LenstrackLogo width={128} />
         <div className="w-16" />
       </header>
 

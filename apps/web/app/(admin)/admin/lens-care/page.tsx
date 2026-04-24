@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, GripVertical, Eye } from "lucide-react";
+import { Plus, Pencil, Trash2, GripVertical, AppWindow } from "lucide-react";
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from "@dnd-kit/core";
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -153,7 +153,7 @@ export default function AdminLensCarePage() {
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={() => setPreview(!preview)} className="gap-2">
-            <Eye className="h-4 w-4" />
+            <AppWindow className="h-4 w-4" />
             {preview ? "Hide Preview" : "Preview"}
           </Button>
           <Button onClick={openCreate} className="bg-[#1A1A2E] hover:bg-[#2d2d5e]">
