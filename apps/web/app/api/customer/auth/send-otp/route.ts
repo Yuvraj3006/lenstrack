@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
-import { prisma } from "@/lib/db";
+import { prisma, Prisma } from "@/lib/db";
 import { redis } from "@/lib/redis";
 import { sendOtp } from "@/lib/sms";
 import { successResponse, validationErrorResponse, errorResponse } from "@/lib/api-response";
@@ -25,7 +25,17 @@ export async function POST(req: NextRequest) {
 
     // Rate limiting
     const rateLimitKey = `otp_rate:${mobile}`;
-    const current = await redis.incr(rateLimitKey);
+    let current: number;
+    try {
+      current = await redis.incr(rateLimitKey);
+    } catch (redisErr) {
+      console.error("[Send OTP] Redis", redisErr);
+      return errorResponse(
+        "OTP service unavailable (Redis). Check REDIS_URL on Vercel — use rediss://… from Upstash.",
+        "REDIS_ERROR",
+        503
+      );
+    }
     if (current === 1) await redis.expire(rateLimitKey, RATE_WINDOW);
     if (current > RATE_LIMIT_MAX) {
       return errorResponse(
@@ -38,8 +48,27 @@ export async function POST(req: NextRequest) {
     const otp = generateOtp();
     const expiresAt = new Date(Date.now() + OTP_TTL * 1000);
 
-    await prisma.otpRecord.create({ data: { mobile, otp, expiresAt } });
-    await sendOtp(mobile, otp);
+    try {
+      await prisma.otpRecord.create({ data: { mobile, otp, expiresAt } });
+    } catch (dbErr) {
+      console.error("[Send OTP] Database", dbErr);
+      const msg =
+        dbErr instanceof Prisma.PrismaClientKnownRequestError
+          ? `Database error (${dbErr.code}). Run prisma db push against production DATABASE_URL.`
+          : "Could not save OTP.";
+      return errorResponse(msg, "DB_ERROR", 500);
+    }
+
+    try {
+      await sendOtp(mobile, otp);
+    } catch (smsErr) {
+      console.error("[Send OTP] SMS", smsErr);
+      return errorResponse(
+        smsErr instanceof Error ? smsErr.message : "SMS send failed.",
+        "SMS_ERROR",
+        500
+      );
+    }
 
     const isDev = process.env.NODE_ENV === "development";
     return successResponse({

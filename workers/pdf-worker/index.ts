@@ -6,7 +6,16 @@ import path from "path";
 import fs from "fs";
 import { format } from "date-fns";
 
-const redis = new IORedis(process.env.REDIS_URL || "redis://localhost:6379", {
+function pdfWorkerRedisUrl(): string {
+  const u = process.env.REDIS_URL?.trim();
+  if (u) return u;
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("REDIS_URL is required to run pdf-worker in production.");
+  }
+  return "redis://127.0.0.1:6379";
+}
+
+const redis = new IORedis(pdfWorkerRedisUrl(), {
   maxRetriesPerRequest: null,
 });
 
