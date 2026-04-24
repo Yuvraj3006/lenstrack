@@ -6,10 +6,10 @@
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
-    "db:push": "pnpm --filter @lenstrack/db prisma db push",
-    "db:migrate": "pnpm --filter @lenstrack/db prisma migrate dev",
-    "db:seed": "pnpm --filter @lenstrack/db tsx seed.ts",
-    "db:studio": "pnpm --filter @lenstrack/db prisma studio",
+    "db:push": "pnpm --filter @lenstrack/db run db:push",
+    "db:migrate": "pnpm --filter @lenstrack/db run db:migrate",
+    "db:seed": "pnpm --filter @lenstrack/db run db:seed",
+    "db:studio": "pnpm --filter @lenstrack/db run db:studio",
     "worker:dev": "pnpm --filter @lenstrack/pdf-worker dev"
   },
   "devDependencies": {

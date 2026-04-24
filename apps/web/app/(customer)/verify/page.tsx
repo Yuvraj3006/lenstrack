@@ -102,7 +102,7 @@ export default function VerifyPage() {
             {/* Dev OTP banner */}
             {devOtp && (
               <div className="flex items-center justify-between p-3 bg-amber-50 border border-amber-200 rounded-xl">
-                <p className="text-xs text-amber-700 font-medium">🔧 Dev OTP</p>
+                <p className="text-xs text-amber-700 font-medium">🔧 OTP (local / debug)</p>
                 <span className="font-mono font-bold text-xl text-amber-800 tracking-widest">
                   {devOtp}
                 </span>

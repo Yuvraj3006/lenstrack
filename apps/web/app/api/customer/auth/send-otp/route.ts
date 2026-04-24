@@ -79,11 +79,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const isDev = process.env.NODE_ENV === "development";
+    // Never return OTP in JSON on public production — it is visible in DevTools / logs.
+    // Local: always echo. Optional ECHO_OTP_IN_API_RESPONSE=1 for staging / demos (you accept the risk).
+    const echoOtpInResponse =
+      process.env.NODE_ENV === "development" ||
+      process.env.ECHO_OTP_IN_API_RESPONSE === "1";
     return successResponse({
       message: "OTP sent successfully",
       expiresIn: OTP_TTL,
-      ...(isDev ? { devOtp: otp } : {}),
+      ...(echoOtpInResponse ? { devOtp: otp } : {}),
     });
   } catch (err) {
     console.error("[Send OTP]", err);

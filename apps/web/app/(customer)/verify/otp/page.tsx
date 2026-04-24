@@ -163,6 +163,12 @@ export default function OtpPage() {
 
           {/* Card */}
           <div className="bg-white rounded-2xl p-7 shadow-2xl">
+            {!devOtp && (
+              <p className="text-center text-sm text-gray-600 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 mb-5 leading-snug">
+                Use the 6-digit code from your SMS. The yellow on-screen code only appears in
+                local development (or staging if your team turns on echo via env).
+              </p>
+            )}
 
             {/* 6-box input */}
             <div
